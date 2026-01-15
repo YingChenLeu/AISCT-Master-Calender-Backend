@@ -1,0 +1,6 @@
+*venv*
+venv
+manage.py
+__pycache__/
+*.*sqlite*
+*.db
