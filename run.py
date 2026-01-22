@@ -1,4 +1,4 @@
 import os
 
 # run the server
-os.system("python3 AISCT_Calendar/manage.py runserver")
+os.system("python3 manage.py runserver")
