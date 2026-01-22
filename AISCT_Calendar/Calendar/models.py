@@ -19,7 +19,7 @@ class Event(models.Model):
         return self.title
 
 class Assignment(models.Model):
-    title=models.CharField(max=200)
+    title=models.CharField(max_length=200)
 
 class Day(models.Model):
     a_day = models.BooleanField(True)
