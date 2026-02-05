@@ -20,6 +20,14 @@ class Event(models.Model):
 
 class Assignment(models.Model):
     title=models.CharField(max_length=200)
+    class_name=models.CharField(max_length=50)
+    description=models.CharField(max_length=200)
+    posted_date = models.DateTimeField()
+    due_date = models.DateTimeField()
+    google_classroom_link = models.URLField(max_length=200)
+    def __str__(self):
+        return self.title
+
 
 class Day(models.Model):
     a_day = models.BooleanField(True)
