@@ -1,4 +1,5 @@
 from django.db import models
+from models import 
 
 # Create your models here.
 class User(models.Model):
@@ -9,16 +10,19 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
-class Event(models.Model):
-    title=models.CharField(max_length=200)
-    location=models.CharField(max_length=50)
-    description=models.CharField(max_length=200)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+
+
+
+class Day(models.Model):
+    a_day = models.BooleanField(True)
+    half_day = models.BooleanField(True)
+    off_day = models.BooleanField(True)
+    date = models.DateField()
     def __str__(self):
-        return self.title
+        return self.date
 
 class Assignment(models.Model):
+    day = models.ForeignKey(Day, on_delete=models.CASCADE())
     title=models.CharField(max_length=200)
     class_name=models.CharField(max_length=50)
     description=models.CharField(max_length=200)
@@ -28,10 +32,12 @@ class Assignment(models.Model):
     def __str__(self):
         return self.title
 
-
-class Day(models.Model):
-    a_day = models.BooleanField(True)
-    half_day = models.BooleanField(True)
-    off_day = models.BooleanField(True)
+class Event(models.Model):
+    title=models.CharField(max_length=200)
+    location=models.CharField(max_length=50)
+    description=models.CharField(max_length=200)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
     def __str__(self):
-        return self.a_day
+        return self.title
+

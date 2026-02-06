@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.utils.dateparse import parse_date
-from .models import Event
+from .models import Event,Assignment,Day
 
 
 
@@ -27,12 +27,34 @@ def getEventsRange(request):
     if start_date and end_date:
         start_date = parse_date(start_date)
         end_date = parse_date(end_date)
-        events = Event.objects.filter(date__range=(start_date, end_date))
+
+        days=Day.objects.filter(date__range=(start_date, end_date))
+        for day in days:
+            events = Event.objects.filter(day=day)
+            assignments = Assignment.objects.filter(day=day)
     else:
         events = Event.objects.all()
+        assignments=Assignment.objects.all()
 
-    data = [{"name": event.name, "date": event.date, "description": event.description} for event in events]
-    return Response(data)
+    events_data = [{
+        "name": event.title,
+        "start_time": event.start_time,
+        "end_time": event.start_time,
+        "description": event.description,
+        } for event in events]
+    assignments_data =[{
+        "name": assignment.title,
+        "class_name": assignment.class_name,
+        "description": assignment.description,
+        "posted_date": assignment.posted_date,
+        "due_date": assignment.due_date,
+        "google_classroom_link": assignment.google_classroom_link
+    } for assignment in assignments]
+    return Response({
+        "events": events_data,
+        "assignments": assignments_data
+    })
+
 @api_view(['POST'])
 def addEvent(request):
     title = request.data.get('name')
@@ -46,3 +68,6 @@ def addEvent(request):
         return Response({"message": "Event added successfully", "event_id": event.id}, status=status.HTTP_201_CREATED)
     else:
         return Response({"error": "Event Title Required"}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+def addAssignment(request):
+    pass #will add later
